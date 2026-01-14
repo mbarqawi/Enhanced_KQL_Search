@@ -248,8 +248,14 @@ public partial class MainWindow : Window
                 return;
             }
 
+            // Use InteractiveBrowserCredential for authentication with embedded browser support
+            var credential = new InteractiveBrowserCredential(new InteractiveBrowserCredentialOptions
+            {
+                TokenCachePersistenceOptions = new TokenCachePersistenceOptions()
+            });
+
             var kcsb = new KustoConnectionStringBuilder(clusterUrl, database)
-                .WithAadUserPromptAuthentication();
+                .WithAadAzureTokenCredentialsAuthentication(credential);
 
             _queryProvider?.Dispose();
             _adminProvider?.Dispose();
